@@ -1,0 +1,8 @@
+config:
+  aws:region: us-east-1
+  aws-sg:data:
+    active: true
+    vpc_name: pulumi-binaya-vpc
+    vpc_cidr: 10.10.0.0/16
+    prv_subnet_name: pulumi-private-subnet
+    prv_cidr: 10.10.1.0/24
