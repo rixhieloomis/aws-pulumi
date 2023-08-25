@@ -1,8 +1,18 @@
 config:
   aws:region: us-east-1
-  aws-sg:data:
+  pulumi-workshop:data:
     active: true
-    vpc_name: pulumi-binaya-vpc
-    vpc_cidr: 10.10.0.0/16
-    prv_subnet_name: pulumi-private-subnet
-    prv_cidr: 10.10.1.0/24
+    vpc_name: workshop-vpc
+    vpc_cidr: 10.20.0.0/16
+    igw_name: workshop-igw
+    prv_subnet_name: workshop-prv-subnet
+    prv_cidr: 10.20.10.0/24
+    pub_subnet_name: workshop-pub-subnet
+    pub_cidr: 10.20.20.0/24
+    pubrttable_name: workshtop-pub-rt
+    pubrtasst_name: workshtop-pub-rt-asst
+    sec_grp_name: workshop-sec-group
+    public_key: [YOUR-PUBLIC-KEY-HERE]
+    ec2_instance_name: workshop-ec2
+    ec2_instance_type: t2.micro
+    CreatedBy: workshop-USER
