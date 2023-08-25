@@ -111,3 +111,5 @@ ec2_instance = aws.ec2.Instance(data.get("ec2_instance_name"),
                                     "CreatedBy": data.get("CreatedBy")
                                 }
                                 )
+
+pulumi.export("EC2 Public IP",ec2_instance.public_ip)
