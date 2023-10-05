@@ -1,4 +1,4 @@
-encryptionsalt: v1:HgpCmd2kRGA=:v1:zcvgW94nAHfzL5Rs:8ebP5WKhed2cMEloUDeuUQJnV5Zypg==
+encryptionsalt: v1:XlMMW7QAMNo=:v1:9WpFjZdOIaENCuWY:WeuP49defkgK6SBpCxJZu9aLWW1FYg==
 config:
   aws:region: us-east-1
   pulumi-workshop:data:
