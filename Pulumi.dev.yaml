@@ -1,7 +1,7 @@
 encryptionsalt: v1:XlMMW7QAMNo=:v1:9WpFjZdOIaENCuWY:WeuP49defkgK6SBpCxJZu9aLWW1FYg==
 config:
   aws:region: us-east-1
-  pulumi-workshop:data:
+  aws-sg:data:
     CreatedBy: workshop-USER
     active: true
     ec2_instance_name: workshop-ec2
