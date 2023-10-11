@@ -4,5 +4,3 @@ runtime:
   options:
     virtualenv: venv
 description: POC for sg using pulumi.
-backend:
-  url: file://~
