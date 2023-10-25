@@ -1,13 +1,10 @@
 ---
-- name: Ensure pip is installed
-    apt:
-      name: python3-pip  # Install pip for Python 3
-      state: present  # Ensure pip is present on the system
-  
-- name: Install boto3 using pip
-  pip:
-    name: boto3  # Specify the package name
-    state: present  # Ensure boto3 is installed
+- name: Install boto3 using pip with shell
+  hosts: localhost
+
+  tasks:
+    - name: Install boto3 using pip with shell
+      shell: pip install boto3
       
 - name: Fetch EC2 Instances and Compare Volume IDs
   hosts: localhost  # Run this playbook locally since dynamic inventory will fetch the instances
