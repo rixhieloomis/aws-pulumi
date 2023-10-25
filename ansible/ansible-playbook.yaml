@@ -4,9 +4,7 @@
 
   tasks:
     - name: Install boto3 using pip with shell
-      pip:
-        name: boto3
-        state: present
+      shell: pip install boto3
       
 - name: Fetch EC2 Instances and Compare Volume IDs
   hosts: localhost  # Run this playbook locally since dynamic inventory will fetch the instances
