@@ -1,0 +1,25 @@
+---
+- name: Fetch EC2 Instances and Compare Volume IDs
+  hosts: localhost  # Run this playbook locally since dynamic inventory will fetch the instances
+
+  tasks:
+    - name: Get EC2 Instances using aws_ec2 plugin
+      ec2_instance_info:
+        # If using named AWS profiles, specify the profile name, or omit if using default credentials
+        filters:
+          instance-state-name: running
+          instance-type:
+            - t3.medium 
+            - c5.large
+      register: ec2_instances
+          
+    - name: Print Instance IDs with Matching Volume IDs
+      debug:
+        msg: "Matching instance ID : {{ item.instance_id }}"
+      with_items: "{{ ec2_instances.instances }}"
+      when: item.block_device_mappings | map(attribute='ebs.volume_id') | list | intersect(vol_ids) | length > 0
+      loop_control:
+        loop_var: item
+        label: "{{ item.instance_id }}"
+      vars:
+        vol_ids: "{{ vol_ids | split(',') }}"
