@@ -18,6 +18,7 @@
           instance-type:
             - t3.medium 
             - c5.large
+            - t2.micro
       register: ec2_instances
           
     - name: Print Instance IDs with Matching Volume IDs
