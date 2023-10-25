@@ -1,4 +1,11 @@
 ---
+- name: Install boto3 using pip with shell
+  hosts: localhost
+
+  tasks:
+    - name: Install boto3 using pip with shell
+      shell: pip install boto3
+      
 - name: Fetch EC2 Instances and Compare Volume IDs
   hosts: localhost  # Run this playbook locally since dynamic inventory will fetch the instances
 
@@ -11,6 +18,7 @@
           instance-type:
             - t3.medium 
             - c5.large
+            - t2.micro
       register: ec2_instances
           
     - name: Print Instance IDs with Matching Volume IDs
