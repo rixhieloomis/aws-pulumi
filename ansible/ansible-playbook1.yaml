@@ -3,4 +3,4 @@
   tasks:
     - name: Print a message
       debug:
-        msg: "Hello, this is a simple Ansible playbook."
+        msg: "Hello, this is a simple Ansible playbook for testing."
