@@ -3,13 +3,11 @@
     apt:
       name: python3-pip  # Install pip for Python 3
       state: present  # Ensure pip is present on the system
-    become: yes  # Run this task as sudo/root
   
 - name: Install boto3 using pip
   pip:
     name: boto3  # Specify the package name
     state: present  # Ensure boto3 is installed
-  become: yes  # Run this task as sudo/root
       
 - name: Fetch EC2 Instances and Compare Volume IDs
   hosts: localhost  # Run this playbook locally since dynamic inventory will fetch the instances
