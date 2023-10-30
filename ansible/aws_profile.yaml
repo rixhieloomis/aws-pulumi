@@ -1,0 +1,21 @@
+---
+- name: Install boto3 using pip with shell
+  hosts: localhost
+
+  tasks:
+    - name: Install boto3 using pip with shell
+      shell: pip install boto3
+
+- name: Fetch EC2 Instances and Compare Volume IDs for Multiple AWS Profiles
+  hosts: localhost  # Run this playbook locally since dynamic inventory will fetch the instances
+
+  tasks:
+    - name: Loop through AWS profiles
+      include_tasks: fetch_and_compare.yml
+      loop: "{{ aws_profiles }}"
+      loop_control:
+        loop_var: aws_profile
+      vars:
+         vol_ids: "{{ vol_ids | split(',') }}"
+
+    

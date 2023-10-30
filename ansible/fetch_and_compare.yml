@@ -1,0 +1,24 @@
+---
+- name: Get EC2 Instances using aws_ec2 plugin
+  ec2_instance_info:
+    aws_profile: "{{ aws_profile }}"
+    # If using named AWS profiles, specify the profile name, or omit if using default credentials
+    filters:
+      instance-state-name: running
+      instance-type:
+        - t2.medium 
+        - c5.large
+        - t2.micro
+  register: ec2_instances
+
+- name: Extract Matching Instance IDs
+  set_fact:
+    matching_instance_ids: "{{ ec2_instances.instances | selectattr('block_device_mappings.0.ebs.volume_id', 'in', vol_ids) | map(attribute='instance_id') | list }}"
+- name: Output Matching Instance IDs
+  debug:
+    var: matching_instance_ids
+
+- name: Output Account Profile
+  debug:
+    var: aws_profile
+
