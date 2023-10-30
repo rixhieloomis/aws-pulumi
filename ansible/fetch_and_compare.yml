@@ -13,12 +13,11 @@
 
 - name: Extract Matching Instance IDs
   set_fact:
-    matching_instance_ids: "{{ ec2_instances.instances | selectattr('block_device_mappings.0.ebs.volume_id', 'in', vol_ids) | map(attribute='instance_id') | list }}"
-- name: Output Matching Instance IDs
-  debug:
-    var: matching_instance_ids
+    matching_instance_ids_dict: "{{ matching_instance_ids_dict | default({}) | combine({aws_profile: ec2_instances.instances | selectattr('block_device_mappings.0.ebs.volume_id', 'in', vol_ids) | map(attribute='instance_id') | list}) }}"
 
-- name: Output Account Profile
+- name: Output Matching Instance IDs as Dictionary
   debug:
-    var: aws_profile
+    var: matching_instance_ids_dict
+
+
 
