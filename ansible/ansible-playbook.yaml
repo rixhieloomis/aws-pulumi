@@ -1,33 +1,72 @@
 ---
-- name: Install boto3 using pip with shell
+- name: Ensure AWS CLI is installed
+  hosts: your_target_hosts
+  tasks:
+    - name: Check if AWS CLI is installed
+      command: aws --version
+      ignore_errors: true
+      register: aws_cli_check
+
+    - name: Install AWS CLI if not present
+      when: aws_cli_check.rc != 0
+      become: true
+      apt:
+        name: awscli 
+        state: present
+
+- name: Create AWS Config and Credentials files
   hosts: localhost
-
   tasks:
-    - name: Install boto3 using pip with shell
-      shell: pip install boto3
-      
-- name: Fetch EC2 Instances and Compare Volume IDs
-  hosts: localhost  # Run this playbook locally since dynamic inventory will fetch the instances
+    - name: Read input lines from file
+      slurp:
+        src: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/input.txt"
+      register: input_content
+    - set_fact:
+        input_lines: "{{ input_content.content | b64decode | regex_replace('\\r\\n|\\r|\\n', '\\n') | split('\n') }}"
+      changed_when: false
 
-  tasks:
-    - name: Get EC2 Instances using aws_ec2 plugin
-      ec2_instance_info:
-        # If using named AWS profiles, specify the profile name, or omit if using default credentials
-        filters:
-          instance-state-name: running
-          instance-type:
-            - t3.medium 
-            - c5.large
-            - t2.micro
-      register: ec2_instances
-          
-    - name: Print Instance IDs with Matching Volume IDs
+    - name: Print input_lines
       debug:
-        msg: "Matching instance ID : {{ item.instance_id }}"
-      with_items: "{{ ec2_instances.instances }}"
-      when: item.block_device_mappings | map(attribute='ebs.volume_id') | list | intersect(vol_ids) | length > 0
-      loop_control:
-        loop_var: item
-        label: "{{ item.instance_id }}"
-      vars:
-        vol_ids: "{{ vol_ids | split(',') }}"
+        var: input_lines
+
+    - name: Process input lines and create config and credentials files
+      block:
+        - name: Extract account ID and volume ID from input lines
+          set_fact:
+            account_id: "{{ item.split(' : ')[0] }}"
+            volume_id: "{{ item.split(' : ')[1] }}"
+          loop: "{{ input_lines }}"
+
+        - name: Create AWS config file
+          copy:
+            content: |
+              [profile {{ account_id }}]
+              region = {{ region }}
+              role_arn = arn:aws:iam::{{ account_id }}:role/{{ rolename }}
+              external_id= {{ external_id}}
+            dest: "~/.aws/config"
+          with_items: "{{ input_lines }}"
+      delegate_to: localhost
+
+    - name: Get attached instances and filter by running state
+      shell: "aws ec2 describe-volumes --region {{ region }} --volume-ids {{ item.split(' : ')[1] }} --query 'Volumes[0].Attachments[?State==`attached`].InstanceId' --output text --profile {{ item.split(' : ')[0] }}"
+      loop: "{{ input_lines }}"
+      register: instance_ids
+      changed_when: false
+      ignore_errors: true
+
+    - name: Ensure output file exists
+      file:
+        path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/output.txt"
+        state: touch
+      delegate_to: localhost
+    - name: Generate output file with running instances
+      blockinfile:
+        path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/output.txt"
+        block: |
+          {% for item in instance_ids.results %}
+          {% if item.stdout_lines | length > 0 %}
+          {{ item.item.split(' : ')[1] }} is attached to instances: {{ item.stdout_lines | join(', ') }} in accountID {{ item.item.split(' : ')[0] }}
+          {% endif %}
+          {% endfor %}
+      delegate_to: localhost

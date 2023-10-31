@@ -6,9 +6,8 @@
     filters:
       instance-state-name: running
       instance-type:
-        - t2.medium 
+        - t3.medium 
         - c5.large
-        - t2.micro
   register: ec2_instances
 
 - name: Extract Matching Instance IDs
