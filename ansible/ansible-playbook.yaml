@@ -1,7 +1,6 @@
 ---
 - name: Ensure AWS CLI is installed
   hosts: your_target_hosts
-  become: yes
   vars:
     region: "eu-west-1"  
     rolename: "StackGuardian" 
