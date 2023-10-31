@@ -43,7 +43,7 @@
         
         - name: Ensure config file exists
           file:
-            path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/config"
+            path: "~/tmp/STACKGUARDIAN_WORKSPACE/artifacts/config"
             state: touch
 
         - name: Create AWS config file
@@ -66,7 +66,7 @@
 
     - name: Ensure output file exists
       file:
-        path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/output.txt"
+        path: "~/tmp/STACKGUARDIAN_WORKSPACE/artifacts/output.txt"
         state: touch
       delegate_to: localhost
     - name: Generate output file with running instances
