@@ -39,6 +39,11 @@
             account_id: "{{ item.split(' : ')[0] }}"
             volume_id: "{{ item.split(' : ')[1] }}"
           loop: "{{ input_lines }}"
+          
+        - name: Ensure config file exists
+          file:
+            path: "~/.aws/config"
+            state: touch
 
         - name: Create AWS config file
           copy:
