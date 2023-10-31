@@ -1,7 +1,6 @@
 ---
 - name: Install AWS CLI using curl and apk
   hosts: localhost
-  become: yes
   tasks:
     - name: Download AWS CLI package
       get_url:
