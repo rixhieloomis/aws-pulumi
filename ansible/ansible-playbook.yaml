@@ -1,6 +1,7 @@
 ---
 - name: Ensure AWS CLI is installed
   hosts: your_target_hosts
+  become_user: StackGuardian
   vars:
     region: "eu-west-1"  
     rolename: "StackGuardian" 
@@ -13,7 +14,7 @@
 
     - name: Install AWS CLI if not present
       when: aws_cli_check.rc != 0
-      pip:
+      apk:
         name: awscli 
         state: present
 
