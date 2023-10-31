@@ -1,22 +1,39 @@
 ---
-- name: Ensure AWS CLI is installed
-  hosts: your_target_hosts
-  become_user: StackGuardian
-  vars:
-    region: "eu-west-1"  
-    rolename: "StackGuardian" 
-    external_id: "external_id"
+- name: Install AWS CLI using curl and apk
+  hosts: localhost
+  become: yes
   tasks:
-    - name: Check if AWS CLI is installed
-      command: aws --version
-      ignore_errors: true
-      register: aws_cli_check
+    - name: Download AWS CLI package
+      get_url:
+        url: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+        dest: "/tmp/awscli-exe-linux-x86_64.zip"
 
-    - name: Install AWS CLI if not present
-      when: aws_cli_check.rc != 0
-      apk:
-        name: awscli 
-        state: present
+    - name: Unzip the downloaded package
+      shell: unzip /tmp/awscli-exe-linux-x86_64.zip -d /tmp
+      args:
+        creates: "/tmp/aws"
+
+    - name: Move AWS CLI binaries to /usr/local/bin
+      shell: mv /tmp/aws /usr/local/bin/aws
+      args:
+        creates: "/usr/local/bin/aws"
+
+    - name: Clean up temporary files
+      file:
+        path: "/tmp/{{ item }}"
+        state: absent
+      with_items:
+        - awscli-exe-linux-x86_64.zip
+        - aws
+
+    - name: Verify AWS CLI installation
+      command: aws --version
+      register: aws_version
+      ignore_errors: true
+
+    - name: Print AWS CLI version
+      debug:
+        var: aws_version.stdout_lines
 
 - name: Create AWS Config and Credentials files
   hosts: localhost
