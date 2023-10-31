@@ -5,6 +5,9 @@
     region: "eu-west-1"  
     rolename: "StackGuardian" 
     external_id: "external_id"
+    aws_access_key_id: "aws_access_key_id"
+    aws_secret_access_key: "aws_secret_access_key"
+
   tasks:
     - name: Check if AWS CLI is installed
       command: aws --version
@@ -65,6 +68,21 @@
               external_id= {{ external_id}}
             dest: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/config"
           with_items: "{{ input_lines }}"
+      
+    - name: Ensure config file exists
+      file:
+        path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/credentials"
+        state: touch
+
+    - name: Create AWS config file
+      copy:
+        content: |
+          [default]
+          aws_access_key_id = {{ aws_access_key_id }}
+          aws_secret_access_key = {{ aws_secret_access_key }}
+        dest: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/credentials"
+      with_items: "{{ input_lines }}"
+      
       delegate_to: localhost
 
     - name: Get attached instances and filter by running state
