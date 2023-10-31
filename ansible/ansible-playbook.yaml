@@ -43,7 +43,7 @@
         
         - name: Ensure config file exists
           file:
-            path: "/tmp/STACKGUARDIAN_WORKSPACE/config"
+            path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/config"
             state: touch
 
         - name: Create AWS config file
