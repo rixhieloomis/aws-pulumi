@@ -9,7 +9,6 @@
 
     - name: Install AWS CLI if not present
       when: aws_cli_check.rc != 0
-      become: true
       apt:
         name: awscli 
         state: present
