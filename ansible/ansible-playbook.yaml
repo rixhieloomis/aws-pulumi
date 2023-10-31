@@ -14,8 +14,9 @@
     - name: Install AWS CLI if not present
       when: aws_cli_check.rc != 0
       apk:
-        name: awscli 
+        name: aws-cli
         state: present
+        update_cache: yes
 
 - name: Create AWS Config and Credentials files
   hosts: localhost
