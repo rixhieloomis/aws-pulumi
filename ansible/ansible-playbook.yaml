@@ -21,6 +21,11 @@
 - name: Create AWS Config and Credentials files
   hosts: localhost
   tasks:
+    - name: Ensure artifacts directory exists
+      ansible.builtin.file:
+        path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts"
+        state: directory
+        mode: '0755'
     - name: Read input lines from file
       slurp:
         src: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/input.txt"
