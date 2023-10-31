@@ -76,7 +76,7 @@
       delegate_to: localhost
     - name: Generate output file with running instances
       blockinfile:
-        path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/output.txt"
+        path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/outputs.txt"
         block: |
           {% for item in instance_ids.results %}
           {% if item.stdout_lines | length > 0 %}
