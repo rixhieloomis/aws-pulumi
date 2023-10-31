@@ -39,7 +39,12 @@
             account_id: "{{ item.split(' : ')[0] }}"
             volume_id: "{{ item.split(' : ')[1] }}"
           loop: "{{ input_lines }}"
-          
+
+        - name: Ensure config dir exists
+          file:
+            path: "~/.aws"
+            state: directory
+        
         - name: Ensure config file exists
           file:
             path: "~/.aws/config"
