@@ -66,6 +66,7 @@
               region = {{ region }}
               role_arn = arn:aws:iam::{{ account_id }}:role/{{ rolename }}
               external_id= {{ external_id}}
+              source_profile= default
             dest: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/config"
           with_items: "{{ input_lines }}"
       
