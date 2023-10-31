@@ -40,15 +40,10 @@
             account_id: "{{ item.split(' : ')[0] }}"
             volume_id: "{{ item.split(' : ')[1] }}"
           loop: "{{ input_lines }}"
-
-        - name: Ensure config dir exists
-          file:
-            path: "~/.aws"
-            state: directory
         
         - name: Ensure config file exists
           file:
-            path: "~/.aws/config"
+            path: "/tmp/STACKGUARDIAN_WORKSPACE/config"
             state: touch
 
         - name: Create AWS config file
@@ -58,7 +53,7 @@
               region = {{ region }}
               role_arn = arn:aws:iam::{{ account_id }}:role/{{ rolename }}
               external_id= {{ external_id}}
-            dest: "~/.aws/config"
+            dest: "tmp/STACKGUARDIAN_WORKSPACE/config"
           with_items: "{{ input_lines }}"
       delegate_to: localhost
 
