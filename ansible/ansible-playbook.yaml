@@ -46,21 +46,43 @@
             volume_id: "{{ item.split(' : ')[1] }}"
           loop: "{{ input_lines }}"
         
-        - name: Ensure config file exists
-          file:
-            path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/config"
-            state: touch
+        # - name: Ensure config file exists
+        #   file:
+        #     path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/config"
+        #     state: touch
 
-        - name: Create AWS config file
-          copy:
-            content: |
-              [profile {{ account_id }}]
+        - name: Set AWS Config Content
+          set_fact:
+            aws_config_content: |
+              [profile {{ item.split(' : ')[0] }}]
               region = {{ region }}
-              role_arn = arn:aws:iam::{{ account_id }}:role/{{ rolename }}
-              external_id= {{ external_id}}
-            dest: "tmp/STACKGUARDIAN_WORKSPACE/artifacts/config"
-          with_items: "{{ input_lines }}"
-      delegate_to: localhost
+              role_arn = arn:aws:iam::{{ item.split(' : ')[0] }}:role/{{ rolename }}
+              external_id = {{ external_id }}
+
+        - name: Ensure AWS CLI Config Directory exists
+          ansible.builtin.file:
+            path: "~/.aws"
+            state: directory
+            mode: '0700'
+
+        - name: Create AWS CLI Config File
+          copy:
+            content: "{{ aws_config_content }}"
+            dest: "~/.aws/config"
+            mode: '0600'
+          with_items: "{{ input_content.content | b64decode | regex_replace('\\r\\n|\\r|\\n', '\\n') | split('\n') }}"
+          delegate_to: localhost
+
+      #   - name: Create AWS config file
+      #     copy:
+      #       content: |
+      #         [profile {{ account_id }}]
+      #         region = {{ region }}
+      #         role_arn = arn:aws:iam::{{ account_id }}:role/{{ rolename }}
+      #         external_id= {{ external_id}}
+      #       dest: "tmp/STACKGUARDIAN_WORKSPACE/artifacts/config"
+      #     with_items: "{{ input_lines }}"
+      # delegate_to: localhost
 
     - name: Get attached instances and filter by running state
       shell: "aws ec2 describe-volumes --region {{ region }} --volume-ids {{ item.split(' : ')[1] }} --query 'Volumes[0].Attachments[?State==`attached`].InstanceId' --output text --profile {{ item.split(' : ')[0] }}"
