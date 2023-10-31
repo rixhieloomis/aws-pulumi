@@ -11,6 +11,11 @@
       ignore_errors: true
       register: aws_cli_check
 
+    - name: Update package index
+      apk:
+        update_cache: yes
+        state: latest
+
     - name: Install AWS CLI if not present
       when: aws_cli_check.rc != 0
       apk:
