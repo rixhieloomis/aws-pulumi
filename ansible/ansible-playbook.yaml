@@ -36,7 +36,7 @@
         mode: '0755'
     - name: Read input lines from file
       slurp:
-        src: "./input.txt"
+        src: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/input.txt"
       register: input_content
     - set_fact:
         input_lines: "{{ input_content.content | b64decode | regex_replace('\\r\\n|\\r|\\n', '\\n') | split('\n') }}"
@@ -45,10 +45,15 @@
       set_fact:
         account_ids: "{{ input_content.content | b64decode | split('\n') | map('regex_replace', '^([0-9]+) : .+', '\\1') | unique | list }}"
       become: no
+      
+    - name: Ensure config file exists
+      file:
+        path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/config"
+        state: touch
 
     - name: Create AWS config profiles for each unique account ID
       lineinfile:
-        path: "./config"
+        path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/config"
         line: "[profile {{ item }}]\nregion = {{ region }}\nrole_arn = arn:aws:iam::{{ item }}:role/{{ rolename }}\nsource_profile = default\n"
         create: yes
       loop: "{{ account_ids }}"
