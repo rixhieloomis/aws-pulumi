@@ -25,8 +25,6 @@
     region: "eu-west-1"
     rolename: "StackGuardian"
     external_id: "external_id"
-    aws_access_key_id: "aws_access_key_id"
-    aws_secret_access_key: "aws_secret_access_key"
     existing_profiles: [] 
   tasks:
     - name: Ensure artifacts directory exists
