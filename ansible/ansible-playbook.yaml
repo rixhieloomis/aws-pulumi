@@ -52,7 +52,7 @@
     - name: Create AWS config profiles for each unique account ID
       lineinfile:
         path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/config"
-        line: "[profile {{ item }}]\nregion = {{ region }}\nrole_arn = arn:aws:iam::{{ item }}:role/{{ rolename }}\nsource_profile = default\n"
+        line: "[profile {{ item }}]\nregion = {{ region }}\nrole_arn = arn:aws:iam::{{ item }}:role/{{ rolename }}\nsource_profile = default\n external_id = {{ external_id }}\n"
         create: yes
       loop: "{{ account_ids }}"
     
@@ -75,7 +75,7 @@
       delegate_to: localhost
 
     - name: Get attached instances and filter by running state
-      shell: "aws ec2 describe-volumes --region {{ region }} --volume-ids {{ item.split(' : ')[1] }} --query 'Volumes[0].Attachments[?State==`attached`]' --output text --profile {{ item.split(' : ')[0] }}"
+      shell: "aws ec2 describe-volumes --region {{ region }} --volume-ids {{ item.split(' : ')[1] }} --query 'Volumes[0].Attachments[?State==`attached`].InstanceId' --output text --profile {{ item.split(' : ')[0] }}"
       loop: "{{ input_lines }}"
       register: instance_ids
       changed_when: false
