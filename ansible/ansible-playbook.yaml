@@ -98,10 +98,10 @@
       shell: >
         aws ec2 describe-volumes
         --region {{ region }}
-        --volume-ids {{ item.split(' : ')[1] }}
+        --volume-ids {{ item.split(':')[1] }}
         --query 'Volumes[0].Attachments[?State==`attached`].InstanceId'
         --output text
-        --profile {{ item.split(' : ')[0] }}
+        --profile {{ item.split(':')[0] }}
       loop: "{{ input_lines }}"
       register: instance_ids
       changed_when: false
