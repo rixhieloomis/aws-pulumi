@@ -72,7 +72,10 @@
     #     dest: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/credentials"
     #   with_items: "{{ input_lines }}"
     #   delegate_to: localhost
-
+    - name: Debug input lines
+      debug:
+        var: input_lines
+        
     - name: Get attached instances and filter by running state
       shell: "aws ec2 describe-volumes --region {{ region }} --volume-ids {{ item.split(' : ')[1] }} --query 'Volumes[0].Attachments[?State==`attached`].InstanceId' --output text --profile {{ item.split(' : ')[0] }}"
       loop: "{{ input_lines }}"
