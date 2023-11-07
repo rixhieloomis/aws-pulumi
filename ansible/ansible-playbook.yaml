@@ -75,13 +75,19 @@
     - name: Debug input lines
       debug:
         var: input_lines
-        
+
     - name: Get attached instances and filter by running state
       shell: "aws ec2 describe-volumes --region {{ region }} --volume-ids {{ item.split(' : ')[1] }} --query 'Volumes[0].Attachments[?State==`attached`].InstanceId' --output text --profile {{ item.split(' : ')[0] }}"
       loop: "{{ input_lines }}"
       register: instance_ids
       changed_when: false
       ignore_errors: true
+
+
+    - name: Debug instance_ids
+      debug:
+        var: instance_ids
+      delegate_to: localhost
 
     - name: Ensure output file exists
       file:
