@@ -115,8 +115,6 @@
           volume-id: "{{ item.split(' : ')[1] }}"
       loop: "{{ input_lines | default([]) }}"
       register: instance_info
-      when: volume_ids | length > 0
-
     
     - name: Print attached instances
       debug:
