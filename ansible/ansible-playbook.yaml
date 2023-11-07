@@ -92,6 +92,10 @@
       register: instance_ids
       changed_when: false
       ignore_errors: true
+    
+    - name: Debug instance_ids variable
+      debug:
+        var: instance_ids
 
     - name: Ensure output file exists
       file:
