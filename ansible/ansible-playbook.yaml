@@ -96,9 +96,14 @@
         --output text
         --profile {{ item.split(' : ')[0] }}
       loop: "{{ input_lines }}"
-      register: instance_ids
+      register: instance_ids_raw
       changed_when: false
       ignore_errors: true
+
+    - set_fact:
+       instance_ids: "{{ instance_ids | default([]) + [item.stdout_lines] }}"
+      loop: "{{ instance_ids_raw.results }}"
+      when: item.stdout_lines is defined
 
     - name: Debug instance_ids
       ansible.builtin.debug:
