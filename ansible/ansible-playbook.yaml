@@ -115,8 +115,8 @@
       blockinfile:
         path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/outputs.txt"
         block: |
-          {% for item in instance_ids.results %}
-          {% if item.stdout_lines | length > 0 %}
+          {% for item in instance_ids %}
+          {% if item.results.stdout_lines | length > 0 %}
           {{ item.item.split(' : ')[1] }} is attached to instances: {{ item.stdout_lines | join(', ') }} in accountID {{ item.item.split(' : ')[0] }}
           {% endif %}
           {% endfor %}
