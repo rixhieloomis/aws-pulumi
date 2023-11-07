@@ -102,48 +102,26 @@
         --query 'Volumes[0].Attachments[?State==`attached`].InstanceId'
         --output text
         --profile {{ item.split(' : ')[0] }}
-      loop: "{{ input_lines | default([]) }}"
+      loop: "{{ input_lines }}"
       register: instance_ids
       changed_when: false
       ignore_errors: true
-      when: input_lines is defined and input_lines | length > 0
 
-    - name: Query AWS for attached instances
-      ec2_instance_info:
-        region: "eu-west-1"
-        filters:
-          volume-id: "{{ item.split(' : ')[1] }}"
-      loop: "{{ input_lines | default([]) }}"
-      register: instance_info
-    
-    - name: Print attached instances
-      debug:
-        var: instance_info
-
-    - name: Ensure output file exists
-      file:
-        path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/outputs.txt"
-        state: touch
-      delegate_to: localhost
-
-    # - name: Generate output file with running instances
-    #   blockinfile:
+    # - name: Ensure output file exists
+    #   file:
     #     path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/outputs.txt"
-    #     block: |
-    #       {% for item in instance_ids.results %}
-    #       {% if item.stdout_lines | length > 0 %}
-    #       {{ item.item.split(' : ')[1] }} is attached to instances: {{ item.stdout_lines | join(', ') }} in accountID {{ item.item.split(' : ')[0] }}
-    #       {% endif %}
-    #       {% endfor %}
+    #     state: touch
     #   delegate_to: localhost
 
     - name: Generate output file with running instances
       blockinfile:
         path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/outputs.txt"
         block: |
-          {% for item in instance_ids.results | default([]) %}
+          {% for item in instance_ids.results %}
           {% if item.stdout_lines | length > 0 %}
           {{ item.item.split(' : ')[1] }} is attached to instances: {{ item.stdout_lines | join(', ') }} in accountID {{ item.item.split(' : ')[0] }}
           {% endif %}
           {% endfor %}
       delegate_to: localhost
+
+    
