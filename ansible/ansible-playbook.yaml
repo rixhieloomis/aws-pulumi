@@ -76,9 +76,14 @@
     - name: Get attached instances and filter by running state
       shell: "aws ec2 describe-volumes --region {{ region }} --volume-ids {{ item.split(' : ')[1] }} --query 'Volumes[0].Attachments[?State==`attached`].InstanceId' --output text --profile {{ item.split(' : ')[0] }}"
       loop: "{{ input_lines }}"
-      register: instance_ids
+      register: instance_ids_raw
       changed_when: false
       ignore_errors: true
+
+    - set_fact:
+      instance_ids: "{{ instance_ids_raw.results | json_query('[].{item: item, stdout_lines: stdout_lines}') }}"
+      delegate_to: localhost
+
 
     - name: Ensure output file exists
       file:
