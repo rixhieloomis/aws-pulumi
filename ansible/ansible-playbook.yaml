@@ -27,72 +27,54 @@
     external_id: "external_id"
     existing_profiles: [] 
   tasks:
-    # - name: Ensure artifacts directory exists
-    #   ansible.builtin.file:
-    #     path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts"
-    #     state: directory
-    #     mode: '0755'
+    - name: Ensure artifacts directory exists
+      ansible.builtin.file:
+        path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts"
+        state: directory
+        mode: '0755'
+
     - name: Read input lines from file
       slurp:
         src: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/input.txt"
       register: input_content
+
     - set_fact:
         input_lines: "{{ input_content.content | b64decode | regex_replace('\\r\\n|\\r|\\n', '\\n') | split('\n') }}"
       changed_when: false
-    # - name: Extract account IDs from input lines
-    #   set_fact:
-    #     account_ids: "{{ input_content.content | b64decode | split('\n') | map('regex_replace', '^([0-9]+) : .+', '\\1') | unique | list }}"
-    #   become: no
+      
+    - name: Extract account IDs from input lines
+      set_fact:
+        account_ids: "{{ input_content.content | b64decode | split('\n') | map('regex_replace', '^([0-9]+) : .+', '\\1') | unique | list }}"
+      become: no
 
-    # - name: Ensure config file exists
-    #   file:
-    #     path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/config"
-    #     state: touch
+    - name: Ensure config file exists
+      file:
+        path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/config"
+        state: touch
 
-    # - name: Create AWS config profiles for each unique account ID
-    #   lineinfile:
-    #     path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/config"
-    #     line: "[profile {{ item }}]\nregion = {{ region }}\nrole_arn = arn:aws:iam::{{ item }}:role/{{ rolename }}\nsource_profile = default\nexternal_id = {{ external_id }}\n"
-    #     create: yes
-    #   loop: "{{ account_ids }}"
+    - name: Create AWS config profiles for each unique account ID
+      lineinfile:
+        path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/config"
+        line: "[profile {{ item }}]\nregion = {{ region }}\nrole_arn = arn:aws:iam::{{ item }}:role/{{ rolename }}\nsource_profile = default\nexternal_id = {{ external_id }}\n"
+        create: yes
+      loop: "{{ account_ids }}"
     
-    # - name: Ensure credentials file exists
-    #   file:
-    #     path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/credentials"
-    #     state: touch
-    #   delegate_to: localhost
+    - name: Ensure credentials file exists
+      file:
+        path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/credentials"
+        state: touch
+      delegate_to: localhost
 
-    # - name: Create AWS credentials file
-    #   copy:
-    #     content: |
-    #       [default]
-    #       aws_access_key_id = ${AWS_ACCESS_KEY_ID}
-    #       aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}
-    #       region = eu-central-1
-    #     dest: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/credentials"
-    #   with_items: "{{ input_lines }}"
-    #   delegate_to: localhost
-
-    # - name: Get attached instances and filter by running state
-    #   shell: "aws ec2 describe-volumes --region {{ region }} --volume-ids {{ item.split(' : ')[1] }} --query 'Volumes[0].Attachments[?State==`attached`].InstanceId' --output text --profile {{ item.split(' : ')[0] }}"
-    #   loop: "{{ input_lines }}"
-    #   register: instance_ids
-    #   changed_when: false
-    #   ignore_errors: true
-
-
-    # - name: Debug instance_ids
-    #   debug:
-    #     var: instance_ids
-    #   delegate_to: localhost
-
-    # - name: Get attached instances and filter by running state
-    #   shell: "aws ec2 describe-volumes --region {{ region }} --volume-ids {{ item.split(' : ')[1] }} --query 'Volumes[0].Attachments[?State==`attached`].InstanceId' --output text --profile {{ item.split(' : ')[0] }}"
-    #   loop: "{{ input_lines }}"
-    #   register: instance_ids
-    #   changed_when: false
-    #   ignore_errors: true
-
+    - name: Create AWS credentials file
+      copy:
+        content: |
+          [default]
+          aws_access_key_id = ${AWS_ACCESS_KEY_ID}
+          aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}
+          region = eu-central-1
+        dest: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/credentials"
+      with_items: "{{ input_lines }}"
+      delegate_to: localhost
 
     - name: Get attached instances and filter by running state
       shell: >
@@ -108,11 +90,11 @@
       ignore_errors: true
       when: input_lines | length > 0 and item != ""
 
-    # - name: Ensure output file exists
-    #   file:
-    #     path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/outputs.txt"
-    #     state: touch
-    #   delegate_to: localhost
+    - name: Ensure output file exists
+      file:
+        path: "/tmp/STACKGUARDIAN_WORKSPACE/artifacts/outputs.txt"
+        state: touch
+      delegate_to: localhost
 
     - name: Generate output file with running instances
       blockinfile:
