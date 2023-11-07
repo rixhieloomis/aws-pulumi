@@ -120,7 +120,7 @@
     
     - name: Print attached instances
       debug:
-        var: instance_info.results
+        var: instance_info
 
     - name: Ensure output file exists
       file:
