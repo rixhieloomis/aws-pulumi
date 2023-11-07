@@ -102,10 +102,11 @@
         --query 'Volumes[0].Attachments[?State==`attached`].InstanceId'
         --output text
         --profile {{ item.split(':')[0] }}
-      loop: "{{ input_lines }}"
+      with_items: "{{ input_lines }}"
       register: instance_ids
       changed_when: false
       ignore_errors: true
+      when: input_lines | length > 0 and item != ""
 
     # - name: Ensure output file exists
     #   file:
