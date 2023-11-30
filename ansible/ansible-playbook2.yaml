@@ -1,0 +1,13 @@
+---
+- name: List EC2 instances in eu-central-1
+  hosts: localhost
+  gather_facts: False
+  tasks:
+    - name: Get EC2 instance information
+      community.aws.ec2_instance_info:
+        region: eu-central-1
+      register: ec2_instances
+
+    - name: Display EC2 instance information
+      debug:
+        var: ec2_instances.instances
