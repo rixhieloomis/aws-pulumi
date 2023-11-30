@@ -3,4 +3,4 @@
   tasks:
     - name: Print a message with local instance IP
       debug:
-        msg: "Hello, this is a simple Ansible playbook for testing. Local instance IP is {{ ansible_default_ipv4.address }}"
+        msg: "Hello, this is a simple Ansible playbook for testing.
