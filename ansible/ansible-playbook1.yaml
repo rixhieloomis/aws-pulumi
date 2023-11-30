@@ -1,5 +1,5 @@
 - name: Simple Ansible Playbook
-  hosts: localhost
+  hosts: default
   tasks:
     - name: Print a message with local instance IP
       debug:
