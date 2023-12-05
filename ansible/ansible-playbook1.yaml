@@ -1,6 +1,7 @@
 - name: Simple Ansible Playbook
-  hosts: default
+  hosts: all
   tasks:
-    - name: Print a message with local instance IP
+    - name: Print a message
       debug:
         msg: "Hello, this is a simple Ansible playbook for testing."
+
