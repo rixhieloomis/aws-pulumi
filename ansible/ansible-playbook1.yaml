@@ -1,5 +1,5 @@
 - name: Simple Ansible Playbook
-  hosts: all
+  hosts: localhost
   tasks:
     - name: Print a message
       debug:
