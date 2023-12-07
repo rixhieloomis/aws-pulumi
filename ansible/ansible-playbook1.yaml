@@ -1,7 +1,8 @@
-- name: Simple Ansible Playbook
+- name: Ansible Playbook with Check Diff for File
   hosts: localhost
   tasks:
-    - name: Print a message
-      debug:
-        msg: "Hello, this is a simple Ansible playbook for testing."
+    - name: Create a configuration file and check for differences
+      template:
+        src: config.j2
+        dest: /etc/myapp/config.conf
 
