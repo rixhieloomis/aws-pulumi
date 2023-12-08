@@ -1,0 +1,9 @@
+---
+- name: Print Message on EC2 Instance
+  hosts: ec2
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Print a Message
+      command: echo "Hello from Ansible on EC2!"
