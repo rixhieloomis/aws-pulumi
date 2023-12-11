@@ -8,7 +8,7 @@
 #     - name: Print a Message
 #       command: echo "Hello from Ansible on EC2!"
 - name: Print Message on EC2 Instance
-  hosts: ec2
+  hosts: localhost
   become: true
   gather_facts: true
 
