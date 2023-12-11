@@ -1,3 +1,4 @@
+---
 - name: Ansible Playbook with Check Diff for File
   hosts: localhost
   tasks:
