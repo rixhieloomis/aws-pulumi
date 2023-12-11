@@ -1,6 +1,6 @@
 ---
 - name: Print Message on EC2 Instance
-  hosts: localhost
+  hosts: ec2
   become: true
   gather_facts: true
 
