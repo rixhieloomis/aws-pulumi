@@ -1,20 +1,12 @@
 ---
-# - name: Print Message on EC2 Instance
-#   hosts: ec2
-#   become: true
-#   gather_facts: true
-
-#   tasks:
-#     - name: Print a Message
-#       command: echo "Hello from Ansible on EC2!"
-
-- name: Print Message on localhost
+- name: Print Message on EC2 Instance
   hosts: all
   become: true
   gather_facts: true
 
   tasks:
-    - name: Print a Message and Intentionally Fail
-      command: /path/to/nonexistent-command
-      ignore_errors: no  
+    - name: Print a Message
+      command: echo "Hello from Ansible on EC2!"
+
+
 
