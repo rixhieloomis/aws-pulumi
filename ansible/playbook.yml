@@ -1,6 +1,6 @@
 ---
 - name: Print Message on EC2 Instance
-  hosts: localhost
+  hosts: all
   gather_facts: true
 
   tasks:
