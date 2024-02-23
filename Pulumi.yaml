@@ -3,4 +3,4 @@ runtime:
   name: python
   options:
     virtualenv: venv
-description: POC for sg using pulumi in aws.
+description: POC for sg using pulumi.
