@@ -1,4 +1,4 @@
-- name: Print Message on EC2 Instance
+- name: Print Message 
   hosts: all
   gather_facts: true
 
