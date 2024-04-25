@@ -1,6 +1,6 @@
 provisioner "remote-exec" {
   inline = [
-    "powershell.exe -ExecutionPolicy Bypass -File script.ps1",
+    "powershell.exe -ExecutionPolicy Bypass -File ${var.script_path}",
   ]
 
   connection {
