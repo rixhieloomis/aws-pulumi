@@ -1,13 +1,13 @@
-- name: Print Message 
-  hosts: localhost
-  gather_facts: true
+# - name: Print Message 
+#   hosts: localhost
+#   gather_facts: true
 
-  tasks:
-    - name: Print a Message
-      command: echo "{{ lookup('env', 'VCS_AUTH_CREDS') }}"
-- name: Print Message 
-  hosts: localhost
-  gather_facts: true
+#   tasks:
+#     - name: Print a Message
+#       command: echo "{{ lookup('env', 'VCS_AUTH_CREDS') }}"
+# - name: Print Message 
+#   hosts: localhost
+#   gather_facts: true
 
 #   tasks:
 #     - name: Print a Message
