@@ -1,5 +1,14 @@
-resource "null_resource" "list_files" {
+resource "null_resource" "hello_script" {
+  # This resource serves as a placeholder and will not perform any actions other than executing the local-exec provisioner
   provisioner "local-exec" {
-    command = "ls -lahR"
+    command = "echo 'Hello, World!'"
   }
+}
+
+output "greeting" {
+  value = "Hello, World!"
+}
+
+output "message_length" {
+  value = length("Hello, World!")
 }
