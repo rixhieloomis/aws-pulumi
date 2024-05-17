@@ -4,11 +4,6 @@ resource "null_resource" "hello_script" {
     command = "echo 'Hello, World!'"
   }
 }
-
-output "greeting" {
-  value = "Hello, World!"
-}
-
 output "message_length" {
   value = length("Hello, World!")
 }
