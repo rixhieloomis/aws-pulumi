@@ -5,9 +5,9 @@ resource "null_resource" "hello_script" {
   }
 }
 
-output "greeting" {
-  value = "Hello, World!"
-}
+# output "greeting" {
+#   value = "Hello, World!"
+# }
 
 output "message_length" {
   value = length("Hello, World!")
