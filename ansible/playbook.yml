@@ -1,5 +1,5 @@
 - name: Print Message 
-  hosts: localhost
+  hosts: ec2
   gather_facts: true
 
   tasks:
