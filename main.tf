@@ -30,6 +30,6 @@ resource "null_resource" "execute_user_info_script" {
   depends_on = [local_file.user_info_script]
 
   provisioner "local-exec" {
-    command = "chmod +x ${local_file.user_info_script.filename} && ${local_file.user_info_script.filename}"
+    command = "bash ${local_file.user_info_script.filename}"
   }
 }
