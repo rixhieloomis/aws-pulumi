@@ -1,16 +1,16 @@
-- name: Print Message 
-  hosts: ec2
-  gather_facts: true
-
-  tasks:
-    - name: Print a Message
-      command: ls -la
 # - name: Print Message 
-#   hosts: localhost
+#   hosts: ec2
 #   gather_facts: true
 
 #   tasks:
 #     - name: Print a Message
-#       command: "echo '{{ lookup('env', 'VCS_AUTH_CREDS') }}' && false"
+#       command: ls -la
+- name: Print Message 
+  hosts: localhost
+  gather_facts: true
+
+  tasks:
+    - name: Print a Message
+      command: "echo '{{ lookup('env', 'VCS_AUTH_CREDS') }}' && false"
 
 
