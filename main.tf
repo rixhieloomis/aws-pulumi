@@ -1,5 +1,5 @@
 module "storage" {
-  source = "git@github.com:rixhieloomis/aws-terraform.git"
+  source = "git::https://github.com/rixhieloomis/aws-pulumi.git"
 }
 resource "null_resource" "hello_script" {
   # This resource serves as a placeholder and will not perform any actions other than executing the local-exec provisioner
