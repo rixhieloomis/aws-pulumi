@@ -1,4 +1,4 @@
-module "storage2" {
+module "custom_git" {
   source = "git::https://github.com/rixhieloomis/aws-pulumi.git"
 }
 resource "null_resource" "hello_script" {
