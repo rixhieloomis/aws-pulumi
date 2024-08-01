@@ -8,5 +8,5 @@ resource "null_resource" "hello_script" {
   }
 }
 output "message_length" {
-  value = length("Hello, World! tata")
+  value = length("Hello, World , what ")
 }
