@@ -16,7 +16,7 @@ resource "null_resource" "delay" {
 resource "null_resource" "example" {
   depends_on = [null_resource.delay]
 
-  provisioner "local-exe" {
+  provisioner "local-exec" {
     command = "echo 'Executing after 10 seconds delay'"
   }
 
