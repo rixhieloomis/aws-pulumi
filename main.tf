@@ -1,9 +1,27 @@
-resource "null_resource" "hello_script" {
-  # This resource serves as a placeholder and will not perform any actions other than executing the local-exec provisioner
+provider "local" {
+  # Define any provider-specific configuration here if needed
+}
+
+resource "null_resource" "delay" {
   provisioner "local-exec" {
-    command = "echo 'Hello, World!'"
+    command = "echo 'Waiting for 10 seconds...' && sleep 10"
+  }
+
+  # Ensure this resource always runs by using a trigger with a random value
+  triggers = {
+    always_run = "${timestamp()}"
   }
 }
-output "message_length" {
-  value = length("Hello, World! sssup")
+
+resource "null_resource" "example" {
+  depends_on = [null_resource.delay]
+
+  provisioner "local-exe" {
+    command = "echo 'Executing after 10 seconds delay'"
+  }
+
+  # Ensure this resource always runs by using a trigger with a random value
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 }
