@@ -1,27 +1,8 @@
-provider "local" {
-  # Define any provider-specific configuration here if needed
+provider "aws" {
+  region = "us-east-1"
 }
 
-resource "null_resource" "delay" {
-  provisioner "local-exec" {
-    command = "echo 'Waiting for 10 seconds...' && sleep 10"
-  }
-
-  # Ensure this resource always runs by using a trigger with a random value
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-}
-
-resource "null_resource" "example" {
-  depends_on = [null_resource.delay]
-
-  provisioner "local-exec" {
-    command = "echo 'Executing after 10 seconds delay'"
-  }
-
-  # Ensure this resource always runs by using a trigger with a random value
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-}
+resource "aws_instance" "example" {
+  ami           = "ami-0c55b159cbfafe1f0"
+  instance_type = "t2.micro"
+# Missing closing brace for the resource block
