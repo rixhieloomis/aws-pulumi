@@ -2,7 +2,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_instance" "example-invalid!" { # Invalid name due to "!"
-  ami           = "ami-0c55b159cbfafe1f0"
+resource "aws_instance" "example" {
+  ami           = var.ami # No default value, must be provided
   instance_type = "t2.micro"
 }
