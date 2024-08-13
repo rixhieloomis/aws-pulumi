@@ -1,13 +1,9 @@
-provider "aws" {
-  region = "us-east-1"
+resource "null_resource" "hello_script" {
+  # This resource serves as a placeholder and will not perform any actions other than executing the local-exec provisioner
+  provisioner "local-exec" {
+    command = "echo 'Hello, World!'"
+  }
 }
-
-resource "aws_instance" "example" {
-  ami           = "ami-0c55b159cbfafe1f0"
-  instance_type = "t2.micro"
+output "message_length" {
+  value = hello_script.non_existent.id # Invalid reference
 }
-
-output "non_existent_output" {
-  value = aws_instance.non_existent.id # Invalid reference
-}
-
