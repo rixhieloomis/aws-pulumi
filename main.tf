@@ -4,7 +4,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "non-existent-bucket" # Incorrect S3 bucket name
+    bucket = "non-existent-bucket-richard-testckajdcbkadbc" # Incorrect S3 bucket name
     key    = "terraform.tfstate"
     region = "us-east-1"
   }
