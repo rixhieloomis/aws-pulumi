@@ -5,15 +5,22 @@ variable "resource_count" {
   default = 1
 }
 
+variable "wait_time" {
+  default = 1
+}
+
 resource "null_resource" "hello_script" {
   count = var.resource_count
 
   provisioner "local-exec" {
-    command = "echo 'Hello, World!'"
+    command = <<EOT
+      echo 'Hello, World!'
+      sleep ${var.wait_time}
+    EOT
   }
 }
 
 output "message_lengths" {
-  value = [for i in range(var.resource_count): length("Hello, World")]
+  value = [for i in range(var.resource_count): length("Hello, World!")]
 }
 
