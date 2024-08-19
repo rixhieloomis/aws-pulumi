@@ -6,7 +6,7 @@ variable "resource_count" {
 }
 
 variable "wait_time" {
-  default = 1
+  default = 10
 }
 
 resource "null_resource" "hello_script" {
