@@ -12,6 +12,10 @@ variable "wait_time" {
 resource "null_resource" "hello_script" {
   count = var.resource_count
 
+  triggers = {
+    timestamp = timestamp()
+  }
+
   provisioner "local-exec" {
     command = <<EOT
       echo 'Hello, World!'
