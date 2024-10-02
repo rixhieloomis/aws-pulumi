@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-west-2"
+  region = "eu-central-1"
 }
 
 data "aws_instances" "example" {
