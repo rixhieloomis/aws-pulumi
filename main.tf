@@ -4,7 +4,7 @@ provider "aws" {
 
 data "aws_instances" "example" {
   instance_tags = {
-    Environment = "production"
+    Environment = "private-runner"
   }
 }
 
