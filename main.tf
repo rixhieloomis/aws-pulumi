@@ -1,6 +1,14 @@
 # module "custom_git" {
 #  source = "git@github.com:rixhieloomis/aws-terraform.git"
 #  }
+terraform {
+  required_providers {
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 3.0"  # Specify a version if needed
+    }
+  }
+}
 variable "resource_count" {
   default = 1
 }
