@@ -9,6 +9,7 @@ terraform {
     }
   }
 }
+backend {}
 variable "resource_count" {
   default = 1
 }
