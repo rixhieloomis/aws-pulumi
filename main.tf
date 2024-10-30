@@ -12,7 +12,9 @@ terraform {
       version = "~> 4.0"  # Specify a version as needed
     }
   }
- backend "s3" {}
+ backend "s3" {
+  region = "eu-central-1"
+ }
 }
 
 variable "resource_count" {
