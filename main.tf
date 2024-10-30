@@ -7,6 +7,10 @@ terraform {
       source  = "hashicorp/null"
       version = "~> 3.0"  # Specify a version if needed
     }
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"  # Specify a version as needed
+    }
   }
  backend "s3" {}
 }
