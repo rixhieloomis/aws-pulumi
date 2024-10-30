@@ -8,7 +8,7 @@ terraform {
       version = "~> 3.0"  # Specify a version if needed
     }
   }
- backend "local" {}
+ backend "s3" {}
 }
 
 variable "resource_count" {
