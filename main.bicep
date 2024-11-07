@@ -11,3 +11,7 @@ resource staccount 'Microsoft.Storage/storageAccounts@2022-09-01'={
     accessTier: 'Cool'
   }
 }
+
+output staccountName string = staccount.name
+output staccountLocation string = staccount.location
+output staccountSku string = staccount.sku.name
