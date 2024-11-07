@@ -1,4 +1,4 @@
-param staccount1 string = 'richardbicep2'
+param staccount1 string
 param location string = 'East US'
 resource staccount 'Microsoft.Storage/storageAccounts@2022-09-01'={
   name: staccount1
