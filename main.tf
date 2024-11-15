@@ -1,21 +1,6 @@
 # module "custom_git" {
 #  source = "git@github.com:rixhieloomis/aws-terraform.git"
 #  }
-terraform {
-  required_providers {
-    null = {
-      source  = "hashicorp/null"
-      version = "~> 3.0"  # Specify a version if needed
-    }
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.0"  # Specify a version as needed
-    }
-  }
- backend "s3" {
-  region = "eu-central-1"
- }
-}
 
 variable "resource_count" {
   default = 1
