@@ -1,31 +1,27 @@
-# module "custom_git" {
-#  source = "git@github.com:rixhieloomis/aws-terraform.git"
-#  }
-
-variable "resource_count" {
-  default = 1
+provider "google" {
+  project = var.project_id
+  region  = var.region
 }
 
-variable "wait_time" {
-  default = 10
-}
+resource "google_storage_bucket" "example_bucket" {
+  name          = "${var.bucket_name_prefix}-${random_id.bucket_suffix.hex}"
+  location      = var.bucket_location
+  force_destroy = true
 
-resource "null_resource" "hello_script" {
-  count = var.resource_count
-
-  triggers = {
-    timestamp = timestamp()
-  }
-
-  provisioner "local-exec" {
-    command = <<EOT
-      echo 'Hello, World!'
-      sleep ${var.wait_time}
-    EOT
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+    condition {
+      age = var.bucket_lifecycle_age
+    }
   }
 }
 
-output "message_lengths" {
-  value = [for i in range(var.resource_count): length("Hello, World!")]
+resource "random_id" "bucket_suffix" {
+  byte_length = var.random_id_byte_length
 }
 
+output "bucket_name" {
+  value = google_storage_bucket.example_bucket.name
+}
