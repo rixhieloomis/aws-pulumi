@@ -3,7 +3,7 @@
 #  }
 
 variable "resource_count" {
-  default = 1
+  default = 2
 }
 
 variable "wait_time" {
