@@ -1,12 +1,12 @@
 provider "aws" {
-  region = "eu-central-1"
+  region = var.region
 }
 
-module "s3_bucket" {
-  source      = "./modules/s3_bucket"
-  bucket_name = "my-modularized-bucket"
+resource "aws_s3_bucket" "my_bucket" {
+  bucket = var.bucket_name
+  acl    = var.acl
 }
 
 output "bucket_name" {
-  value = module.s3_bucket.bucket_name
+  value = aws_s3_bucket.my_bucket.bucket
 }
