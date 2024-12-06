@@ -1,8 +1,12 @@
-resource "aws_s3_bucket" "this" {
-  bucket = var.bucket_name
-  acl    = var.acl
+provider "aws" {
+  region = "eu-central-1"
+}
+
+module "s3_bucket" {
+  source      = "./modules/s3_bucket"
+  bucket_name = "my-modularized-bucket"
 }
 
 output "bucket_name" {
-  value = aws_s3_bucket.this.bucket
+  value = module.s3_bucket.bucket_name
 }
