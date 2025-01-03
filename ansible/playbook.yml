@@ -11,6 +11,6 @@
 
   tasks:
     - name: Print a Message
-      command: "echo '{{ lookup('env', 'VCS_AUTH_CREDS') }}' && false"
+      command: "echo 'Hello, This is a dummy message'"
 
 
