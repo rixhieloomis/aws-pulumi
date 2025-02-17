@@ -2,7 +2,7 @@ terraform {
   backend "http" {
     address  = "https://api.app.stackguardian.io/api/v1/orgs/wicked-hop/wfgrps/Managed-backend/wfs/Managed-backend/artifacts/tfstate.json"
     username = "richard.loomis@stackguardian.io"
-    password = "SG_API_TOKEN"
+    password = var.sg_api_token
   }
 }
 
