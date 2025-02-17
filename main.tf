@@ -1,31 +1,17 @@
-# module "custom_git" {
-#  source = "git@github.com:rixhieloomis/aws-terraform.git"
-#  }
-
-variable "resource_count" {
-  default = 1
-}
-
-variable "wait_time" {
-  default = 10
-}
-
-resource "null_resource" "hello_script" {
-  count = var.resource_count
-
-  triggers = {
-    timestamp = timestamp()
+terraform {
+  backend "http" {
+    address  = "https://api.app.stackguardian.io/api/v1/orgs/wicked-hop/wfgrps/Managed-backend/wfs/Managed-backend/artifacts/tfstate.json"
+    username = "richard.loomis@stackguardian.io"
+    password = "SG_API_TOKEN"
   }
+}
 
+resource "null_resource" "workflow_example" {
   provisioner "local-exec" {
-    command = <<EOT
-      echo 'Hello, World!'
-      sleep ${var.wait_time}
-    EOT
+    command = "echo 'OpenTofu workflow example'"
   }
 }
 
-output "message_lengths" {
-  value = [for i in range(var.resource_count): length("Hello, World!")]
+output "workflow_example_output" {
+  value = resource.null_resource.workflow_example.id
 }
-
