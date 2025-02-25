@@ -1,17 +1,7 @@
-param staccount1 string
-param location string = 'East US'
-resource staccount 'Microsoft.Storage/storageAccounts@2022-09-01'={
-  name: staccount1
-  kind: 'BlobStorage'
-  location: location
-  sku: {
-    name: 'Standard_LRS'
-  }
-  properties:{
-    accessTier: 'Cool'
+module storageModule 'br:bicepstoragemodule.azurecr.io/storage:v1' = {
+  name: 'storageDeployment'
+  params: {
+    storageAccountName: 'st${uniqueString(resourceGroup().id)}'
+    location: 'eastus'
   }
 }
-
-output staccountName string = staccount.name
-output staccountLocation string = staccount.location
-output staccountSku string = staccount.sku.name
