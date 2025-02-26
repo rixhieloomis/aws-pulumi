@@ -1,17 +1,13 @@
-param staccount1 string
+param resourceGroupName string
 param location string = 'East US'
-resource staccount 'Microsoft.Storage/storageAccounts@2022-09-01'={
-  name: staccount1
-  kind: 'BlobStorage'
+
+targetScope = 'subscription'
+
+resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
+  name: resourceGroupName
   location: location
-  sku: {
-    name: 'Standard_LRS'
-  }
-  properties:{
-    accessTier: 'Cool'
-  }
 }
 
-output staccountName string = staccount.name
-output staccountLocation string = staccount.location
-output staccountSku string = staccount.sku.name
+output rgName string = rg.name
+output rgLocation string = rg.location
+
