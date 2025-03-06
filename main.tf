@@ -1,7 +1,3 @@
-# module "custom_git" {
-#  source = "git@github.com:rixhieloomis/aws-terraform.git"
-#  }
-
 variable "resource_count" {
   default = 1
 }
@@ -29,3 +25,6 @@ output "message_lengths" {
   value = [for i in range(var.resource_count): length("Hello, World!")]
 }
 
+output "vnet_id" {
+  value = "vnet-12345678"
+}
