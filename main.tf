@@ -2,7 +2,7 @@
 #  source = "git@github.com:rixhieloomis/aws-terraform.git"
 #  }
 
-variable "resource_counter" {
+variable "resource_count" {
   default = 1
 }
 
@@ -26,6 +26,6 @@ resource "null_resource" "hello_script" {
 }
 
 output "message_lengths" {
-  value = [for i in range(var.resource_counter): length("Hello, World!")]
+  value = [for i in range(var.resource_count): length("Hello, World!")]
 }
 
