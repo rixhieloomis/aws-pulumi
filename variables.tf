@@ -1,8 +1,8 @@
-# variable "aws_region" {
-#   description = "AWS region to deploy resources"
-#   type        = string
-#   default     = "eu-central-1"
-# }
+variable "aws_region" {
+  description = "AWS region to deploy resources"
+  type        = string
+  default     = "eu-central-1"
+}
 
 variable "number_of_roles" {
   description = "Number of IAM roles to create"
