@@ -1,7 +1,3 @@
-provider "aws" {
-  region = var.aws_region
-}
-
 # Create IAM roles with minimum permissions
 resource "aws_iam_role" "minimal_roles" {
   count = var.number_of_roles
