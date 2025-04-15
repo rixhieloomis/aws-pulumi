@@ -1,63 +1,51 @@
 variable "aws_region" {
-  description = "AWS region to deploy resources"
+  description = "AWS region to deploy KMS keys"
   type        = string
   default     = "eu-central-1"
 }
 
-variable "number_of_roles" {
-  description = "Number of IAM roles to create"
+variable "number_of_keys" {
+  description = "Number of KMS keys to create"
   type        = number
-  default     = 1
+  default     = 1000
 }
 
-variable "role_name_prefix" {
-  description = "Prefix for the IAM role names"
+variable "key_name_prefix" {
+  description = "Prefix for the KMS key names in tags"
   type        = string
-  default     = "minimal-role"
+  default     = "app-key"
 }
 
-variable "assume_role_service" {
-  description = "AWS service that can assume this role"
+variable "key_description_prefix" {
+  description = "Prefix for the KMS key descriptions"
   type        = string
-  default     = "ec2.amazonaws.com"
+  default     = "Application KMS Key"
 }
 
-variable "policy_name" {
-  description = "Name of the IAM policy"
+variable "key_alias_prefix" {
+  description = "Prefix for the KMS key aliases"
   type        = string
-  default     = "minimal-permission-policy"
+  default     = "app-key"
 }
 
-variable "policy_description" {
-  description = "Description of the IAM policy"
-  type        = string
-  default     = "Policy with minimal permissions"
+variable "key_deletion_window_days" {
+  description = "Duration in days after which the key is deleted after destruction of the resource"
+  type        = number
+  default     = 30
 }
 
-variable "allowed_actions" {
-  description = "List of allowed actions for the policy"
-  type        = list(string)
-  default     = [
-    "s3:ListBucket",
-    "s3:GetObject"
-  ]
-}
-
-variable "allowed_resources" {
-  description = "List of resources for the policy"
-  type        = list(string)
-  default     = [
-    "arn:aws:s3:::example-bucket",
-    "arn:aws:s3:::example-bucket/*"
-  ]
+variable "enable_key_rotation" {
+  description = "Specifies whether key rotation is enabled"
+  type        = bool
+  default     = true
 }
 
 variable "common_tags" {
   description = "Common tags to apply to all resources"
   type        = map(string)
   default     = {
-    Environment = "QA"
+    Environment = "Production"
     CreatedBy   = "Terraform"
-    Project     = "IAM-Roles-Automation"
+    Project     = "KMS-Automation"
   }
 }

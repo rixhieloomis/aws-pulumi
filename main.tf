@@ -2,55 +2,42 @@ provider "aws" {
   region = var.aws_region
 }
 
-# Create IAM roles with minimum permissions
-resource "aws_iam_role" "minimal_roles" {
-  count = var.number_of_roles
+data "aws_caller_identity" "current" {}
+
+# Create KMS keys
+resource "aws_kms_key" "application_keys" {
+  count                   = var.number_of_keys
+  description             = "${var.key_description_prefix} ${count.index + 1}"
+  deletion_window_in_days = var.key_deletion_window_days
+  enable_key_rotation     = var.enable_key_rotation
   
-  name = "${var.role_name_prefix}-${count.index + 1}"
-  
-  # Assume role policy (trust relationship)
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
+  # Key policy allowing the account to manage the key with minimal permissions
+  policy = jsonencode({
+    Version = "2012-10-17",
     Statement = [
       {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
+        Sid    = "Enable IAM User Permissions",
+        Effect = "Allow",
         Principal = {
-          Service = var.assume_role_service
-        }
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        },
+        Action   = "kms:*",
+        Resource = "*"
       }
     ]
   })
-  
-  # Tags for better organization
+
   tags = merge(
     var.common_tags,
     {
-      Name = "${var.role_name_prefix}-${count.index + 1}"
+      Name = "${var.key_name_prefix}-${count.index + 1}"
     }
   )
 }
 
-# Create a minimal permission policy
-resource "aws_iam_policy" "minimal_permission_policy" {
-  name        = var.policy_name
-  description = var.policy_description
-  
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action   = var.allowed_actions
-        Effect   = "Allow"
-        Resource = var.allowed_resources
-      }
-    ]
-  })
-}
-
-# Attach the policy to all roles
-resource "aws_iam_role_policy_attachment" "policy_attachment" {
-  count      = var.number_of_roles
-  role       = aws_iam_role.minimal_roles[count.index].name
-  policy_arn = aws_iam_policy.minimal_permission_policy.arn
+# Create aliases for the KMS keys for easier identification
+resource "aws_kms_alias" "key_aliases" {
+  count         = var.number_of_keys
+  name          = "alias/${var.key_alias_prefix}-${count.index + 1}"
+  target_key_id = aws_kms_key.application_keys[count.index].key_id
 }
