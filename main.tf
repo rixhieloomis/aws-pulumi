@@ -1,8 +1,6 @@
 terraform {
   backend "http" {
     address  = "https://testapi.qa.stackguardian.io/api/v1/orgs/demo-org/wfgrps/Managed-backend/wfs/CUSTOM-1Vtc/artifacts/tfstate.json/"
-    username = "richard.loomis@stackguardian.io"
-    password = "sgu_9ysx2FOo2wfMF1ZAUsK96"
   }
 }
 
